@@ -311,11 +311,15 @@ func tampilansearching(){
 func pencarSequential(n int, resep *tabresep, bahanYgDicari string) {
 	var i int
 	var found bool
+
 	fmt.Println("               🍓  ≽^• ˕ • ྀི≼ 🍰 ")
 	fmt.Printf("         Hasil Pencarian Bahan: %s\n", bahanYgDicari)
+
 	for i = 0; i < n; i++ {
 		if toLower(bahanYgDicari) == toLower((*resep)[i].bahanMakanan) {
 			found = true
+		//══════════════════════════════════════════════
+		//══════════════════════════════════════════════
 			fmt.Println("══════════════════════════════════════════")
 			fmt.Printf ("         𐙚⋆🍓 Resep ke-%-2d 🍰⋆𐙚           \n", i+1)
 			fmt.Println("══════════════════════════════════════════")
@@ -329,6 +333,7 @@ func pencarSequential(n int, resep *tabresep, bahanYgDicari string) {
 		}
 	}
 	if found == false {
+
 		fmt.Println("╔══════════════════════════════════════════╗")
 		fmt.Println("║      𐙚⋆🍓 Resep Tidak Ditemukan 🍰⋆𐙚     ║")
 		fmt.Println("╠══════════════════════════════════════════╣")
@@ -358,6 +363,8 @@ func pencarianBinary(n int, resep *tabresep, bahanYgDicari string) {
 	}
 	if found != -1 {
 		(*resep)[found].jumlahDicari++
+		//══════════════════════════════════════════════
+		//══════════════════════════════════════════════
 			fmt.Println("══════════════════════════════════════════")
 			fmt.Printf ("         𐙚⋆🍓 Resep ke-%-2d 🍰⋆𐙚           \n", found+1)
 			fmt.Println("══════════════════════════════════════════")
@@ -369,6 +376,7 @@ func pencarianBinary(n int, resep *tabresep, bahanYgDicari string) {
 			fmt.Printf ("  ⏰ Estimasi Waktu    : %d menit\n", resep[found].estimasiWaktu)
 			fmt.Println()
 	} else {
+
 		clearScreen()
 		fmt.Println("╔══════════════════════════════════════════╗")
 		fmt.Println("║      𐙚⋆🍓 Resep Tidak Ditemukan 🍰⋆𐙚     ║")
@@ -393,8 +401,10 @@ func menukelola()int{
 	fmt.Println("║  [5] Lanjut ke Pencarian                 ║")
 	fmt.Println("╚══════════════════════════════════════════╝")
 	fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
+
 	fmt.Scanln(&pilihanKelola)
 	fmt.Println(" ")
+
 	return pilihanKelola
 
 }
@@ -409,6 +419,7 @@ func tambahData(resep *tabresep, n *int, reader *bufio.Reader) {
 	fmt.Println("══════════════════════════════════════════")
 	fmt.Println("      𐙚⋆🍓 Tambah Data Resep 🍰⋆𐙚         ")
 	fmt.Println("══════════════════════════════════════════")
+
 	i = *n
 	fmt.Print("  📖 Judul Resep       : ")
 	resep[i].judulresep = inputString(reader)
@@ -429,6 +440,7 @@ func tambahData(resep *tabresep, n *int, reader *bufio.Reader) {
 	fmt.Scan(&resep[i].estimasiWaktu)
 	fmt.Println(" ")
 	clearScreen()
+
 	*n = *n + 1
 	fmt.Println("╔══════════════════════════════════════════╗")
 	fmt.Println("║   𐙚⋆🍓 Data Berhasil Ditambahkan 🍰⋆𐙚    ║")
@@ -453,9 +465,12 @@ func ubahData(resep *tabresep, n int, reader *bufio.Reader) {
 	fmt.Printf ("║  (1 - %d) :                              ║\n", n)
 	fmt.Println("╚══════════════════════════════════════════╝")
 	fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
+
 	fmt.Scan(&idx)
+
 	idx = idx - 1
 	if idx < 0 || idx >= n {
+
 		clearScreen()
 		fmt.Println("╔══════════════════════════════════════════╗")
 		fmt.Println("║      𐙚⋆🍓 Input Tidak Valid 🍰⋆𐙚         ║")
@@ -474,6 +489,7 @@ func ubahData(resep *tabresep, n int, reader *bufio.Reader) {
 	fmt.Println("║  [1] Ya           [2] Tidak              ║")
 	fmt.Println("╚══════════════════════════════════════════╝")
     fmt.Print("masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ :  ")
+
     fmt.Scanln(&konfirmasi)
 
 	if konfirmasi != 1 {
@@ -518,7 +534,9 @@ func ubahData(resep *tabresep, n int, reader *bufio.Reader) {
 		fmt.Println("║  [1] Ya      [2] Tidak (Undo)            ║")
 		fmt.Println("╚══════════════════════════════════════════╝")
 		fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
+
 		fmt.Scanln(&konfirmasi)
+
 		clearScreen()
 		if konfirmasi == 1 {
 			resep[idx] = temp // Data asli baru ditimpa di sini kalau setuju
@@ -557,9 +575,12 @@ func hapusData(resep *tabresep, n *int) {
 	fmt.Println("╚══════════════════════════════════════════╝")
 	fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
 	fmt.Print(" ")
+
 	fmt.Scan(&idx)
+
 	idx = idx - 1
 	if idx < 0 || idx >= *n {
+
 		clearScreen()
 		fmt.Println("╔══════════════════════════════════════════╗")
 		fmt.Println("║      𐙚⋆🍓 Input Tidak Valid 🍰⋆𐙚         ║")
@@ -568,6 +589,7 @@ func hapusData(resep *tabresep, n *int) {
 		fmt.Println("║          ૮◞ ﻌ ◟ ა                        ║")
 		fmt.Println("╚══════════════════════════════════════════╝")
 		wait()
+
 		return
 	}
 	clearScreen()
@@ -580,10 +602,12 @@ func hapusData(resep *tabresep, n *int) {
 	fmt.Println("║  Yakin ingin menghapus resep ini?        ║")
 	fmt.Println("║  [1] Ya          [2] Tidak               ║")
 	fmt.Println("╚══════════════════════════════════════════╝")
-fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
+	fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
+
 	fmt.Scan(&konfirmasi)
 
 if konfirmasi != 1 {
+
 	clearScreen()
     fmt.Println("╔══════════════════════════════════════════╗")
 	fmt.Println("║     𐙚⋆🍓 Hapus Dibatalkan 🍰⋆𐙚           ║")
@@ -592,6 +616,7 @@ if konfirmasi != 1 {
 	fmt.Println("║                𐔌՞ ܸ.ˬ.ܸ՞𐦯                  ║")
 	fmt.Println("╚══════════════════════════════════════════╝")
 	wait()
+
     return  // ← batalkan, tidak jadi hapus
 }
 	for i = idx; i < *n-1; i++ {
@@ -686,6 +711,7 @@ func StatistikKategori(resep tabresep, n int){
 	fmt.Println("══════════════════════════════════════════")
     fmt.Println("     𐙚⋆🍓 Statistik Per Kategori 🍰⋆𐙚     ")
     fmt.Println("══════════════════════════════════════════")
+
     for i = 0; i < totalKategori; i++ {
         fmt.Printf("  🏷️  %-20s : %d resep\n", 
             namaKategori[i], jumlahKategori[i])
@@ -761,7 +787,9 @@ func tampilanSorting(resep *tabresep, n *int){
 		fmt.Println("╔══════════════════════════════════════════╗")
 		fmt.Println("║    𐙚⋆🍓 Hasil Setelah Diurutkan 🍰⋆𐙚     ║")
 		fmt.Println("╚══════════════════════════════════════════╝")
+
 		for i = 0; i < *n; i++ {
+			
 			fmt.Println("══════════════════════════════════════════")
 			fmt.Printf("        𐙚⋆🍓 Resep ke-%-2d 🍰⋆𐙚            \n", i+1)
 			fmt.Println("══════════════════════════════════════════")
