@@ -36,6 +36,8 @@ func main() {
 	var angkafav int
 	var reader *bufio.Reader
 	var arah int
+	var CaraCari int
+	var temp tabresep
 
 	reader = bufio.NewReader(os.Stdin)
 
@@ -75,8 +77,12 @@ func main() {
 			fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ :  ")
 			fmt.Scanln(&caraPencarianData)
 			clearScreen()
+			tampilanCara()
+			fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ :  ")
+			fmt.Scanln(&CaraCari)
 			switch caraPencarianData {
 			case 1:
+				clearScreen()
 				fmt.Println("╔══════════════════════════════════════════╗")
 				fmt.Println("║    𐙚⋆🍓  Bahan makan utama 🍰⋆𐙚          ║")
 				fmt.Println("╚══════════════════════════════════════════╝")
@@ -84,6 +90,7 @@ func main() {
 				bahanYgDicari = inputString(reader)
 				clearScreen()
 			case 2:
+				clearScreen()
 				fmt.Println("╔══════════════════════════════════════════╗")
 				fmt.Println("║         𐙚⋆🍓  judul makanan🍰⋆𐙚          ║")
 				fmt.Println("╚══════════════════════════════════════════╝")
@@ -93,13 +100,27 @@ func main() {
 
 			// percabangan sequential dan binary/ judul dan durasi
 			if caraPencarianData == 1 {
-				fmt.Println(" ")
-				(pencarSequential(n, &resep, bahanYgDicari))
-			} else {
-				sortAbjad(&resep, n)
-				fmt.Println(" ")
-				(pencarianBinary(n, &resep, bahanYgDicari))
+				if CaraCari == 1 {
+					fmt.Println(" ")
+					(pencarSequential(n, &resep, bahanYgDicari))
+				} else {
+					temp = resep
+					sortBahanMakanan(&temp, n)
+					fmt.Println(" ")
+					binaryBahanMakanan(n, &temp, bahanYgDicari)
+				}
+			} else if caraPencarianData == 2 {
+				if CaraCari == 1 {
+					fmt.Println(" ")
+					judulSequential(n, &resep, bahanYgDicari)
+				} else {
+					temp = resep
+					sortAbjad(&temp, n)
+					fmt.Println(" ")
+					(pencarianBinary(n, &temp, bahanYgDicari))
+				}
 			}
+
 			wait()
 			clearScreen()
 			//═════════════════════════════════════════
@@ -247,6 +268,11 @@ func input(resep *tabresep, n *int, reader *bufio.Reader) {
 		wait()
 		return
 	}
+	if *n+jumlah > NMAX {
+	fmt.Println("Data melebihi kapasitas penyimpanan")
+	wait()
+	return
+}
 
 	mulai = *n
 	*n = *n + jumlah
@@ -312,6 +338,16 @@ func tampilansearching() {
 	fmt.Println("║  [1] Bahan makanan utama                 ║")
 	fmt.Println("║  [2] Judul                               ║")
 	fmt.Println("╚══════════════════════════════════════════╝")
+
+}
+func tampilanCara() {
+	fmt.Println("╔══════════════════════════════════════════╗")
+	fmt.Println("║ dengan cara apa data dicari??            ║")
+	fmt.Println("╠══════════════════════════════════════════╣")
+	fmt.Println("║  Ingin berdasarkan apa data dicari?      ║")
+	fmt.Println("║  [1] sequential.                         ║")
+	fmt.Println("║  [2] binary.                             ║")
+	fmt.Println("╚══════════════════════════════════════════╝")
 }
 func pencarSequential(n int, resep *tabresep, bahanYgDicari string) {
 	var i int
@@ -347,7 +383,35 @@ func pencarSequential(n int, resep *tabresep, bahanYgDicari string) {
 		fmt.Println("╚══════════════════════════════════════════╝")
 	}
 }
+func judulSequential(n int, resep *tabresep, bahanYgDicari string) {
+	var i int
+	var found bool
 
+	for i = 0; i < n; i++ {
+		if toLower(bahanYgDicari) == toLower((*resep)[i].judulresep) {
+			found = true
+			fmt.Println("══════════════════════════════════════════")
+			fmt.Printf("         𐙚⋆🍓 Resep ke-%-2d 🍰⋆𐙚           \n", i+1)
+			fmt.Println("══════════════════════════════════════════")
+			fmt.Printf("  📖 Judul Resep       : %s\n", (*resep)[i].judulresep)
+			fmt.Printf("  🥬 Bahan Makanan     : %s\n", (*resep)[i].bahanMakanan)
+			fmt.Printf("  🏷️  Kategori Masakan  : %s\n", (*resep)[i].kategoriMasakan)
+			fmt.Printf("  🧄 Komposisi Bahan   : %s\n", (*resep)[i].komposisiBahan)
+			fmt.Printf("  📝 Langkah Pembuatan : %s\n", (*resep)[i].langkahPembuatan)
+			fmt.Printf("  ⏰ Estimasi Waktu    : %d menit\n", (*resep)[i].estimasiWaktu)
+			fmt.Println()
+		}
+	}
+	if found == false {
+
+		fmt.Println("╔══════════════════════════════════════════╗")
+		fmt.Println("║      𐙚⋆🍓 Resep Tidak Ditemukan 🍰⋆𐙚     ║")
+		fmt.Println("╠══════════════════════════════════════════╣")
+		fmt.Println("║    Maaf yaa, datanya tidak tersedia      ║")
+		fmt.Println("║                ૮◞ ‸ ◟ ა                  ║")
+		fmt.Println("╚══════════════════════════════════════════╝")
+	}
+}
 func pencarianBinary(n int, resep *tabresep, bahanYgDicari string) {
 	var left, right, mid int
 	var found int
@@ -361,6 +425,49 @@ func pencarianBinary(n int, resep *tabresep, bahanYgDicari string) {
 		if target > toLower((*resep)[mid].judulresep) {
 			left = mid + 1
 		} else if target < toLower((*resep)[mid].judulresep) {
+			right = mid - 1
+		} else {
+			found = mid
+		}
+	}
+	if found != -1 {
+		(*resep)[found].jumlahDicari++
+		//══════════════════════════════════════════════
+		//══════════════════════════════════════════════
+		fmt.Println("══════════════════════════════════════════")
+		fmt.Printf("         𐙚⋆🍓 Resep ke-%-2d 🍰⋆𐙚           \n", found+1)
+		fmt.Println("══════════════════════════════════════════")
+		fmt.Printf("  📖 Judul Resep       : %s\n", resep[found].judulresep)
+		fmt.Printf("  🥬 Bahan Makanan     : %s\n", resep[found].bahanMakanan)
+		fmt.Printf("  🏷️  Kategori Masakan  : %s\n", resep[found].kategoriMasakan)
+		fmt.Printf("  🧄 Komposisi Bahan   : %s\n", resep[found].komposisiBahan)
+		fmt.Printf("  📝 Langkah Pembuatan : %s\n", resep[found].langkahPembuatan)
+		fmt.Printf("  ⏰ Estimasi Waktu    : %d menit\n", resep[found].estimasiWaktu)
+		fmt.Println()
+	} else {
+
+		clearScreen()
+		fmt.Println("╔══════════════════════════════════════════╗")
+		fmt.Println("║      𐙚⋆🍓 Resep Tidak Ditemukan 🍰⋆𐙚     ║")
+		fmt.Println("╠══════════════════════════════════════════╣")
+		fmt.Println("║    Maaf yaa, datanya tidak tersedia      ║")
+		fmt.Println("║                ૮◞ ‸ ◟ ა                  ║")
+		fmt.Println("╚══════════════════════════════════════════╝")
+	}
+}
+func binaryBahanMakanan(n int, resep *tabresep, bahanYgDicari string) {
+	var found int
+	var left, right, mid int
+	var target string
+	left = 0
+	right = n - 1
+	found = -1
+	target = toLower(bahanYgDicari)
+	for left <= right && found == -1 {
+		mid = (left + right) / 2
+		if target > toLower((*resep)[mid].bahanMakanan) {
+			left = mid + 1
+		} else if target < toLower((*resep)[mid].bahanMakanan) {
 			right = mid - 1
 		} else {
 			found = mid
@@ -444,7 +551,7 @@ func tambahData(resep *tabresep, n *int, reader *bufio.Reader) {
 	resep[i].langkahPembuatan = inputString(reader)
 
 	fmt.Print("  ⏰ Estimasi Waktu    : ")
-	fmt.Scanln(&resep[i].estimasiWaktu)
+	fmt.Scan(&resep[i].estimasiWaktu)
 	fmt.Println(" ")
 	clearScreen()
 
@@ -458,6 +565,24 @@ func tambahData(resep *tabresep, n *int, reader *bufio.Reader) {
 	wait()
 	fmt.Println(" ")
 }
+func tampilanubahdata() int {
+	var pilihubah int
+	fmt.Println("╔══════════════════════════════════════════╗")
+	fmt.Println("║        𐙚⋆🍓 Mau Ubah Apa? 🍰⋆𐙚           ║")
+	fmt.Println("╠══════════════════════════════════════════╣")
+	fmt.Println("║ 𑣲⋆ [1] Judul Resep                       ║")
+	fmt.Println("║ 𑣲⋆ [2] Bahan Makanan                     ║")
+	fmt.Println("║ 𑣲⋆ [3] Kategori                          ║")
+	fmt.Println("║ 𑣲⋆ [4] Komposisi Bahan                   ║")
+	fmt.Println("║ 𑣲⋆ [5] Langkah Pembuatan                 ║")
+	fmt.Println("║ 𑣲⋆ [6] Estimasi Waktu                    ║")
+	fmt.Println("╚══════════════════════════════════════════╝")
+	fmt.Print("> pilih angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
+	fmt.Scanln(&pilihubah)
+
+	return pilihubah
+
+}
 
 // func ubah data
 func ubahData(resep *tabresep, n int, reader *bufio.Reader) {
@@ -467,17 +592,16 @@ func ubahData(resep *tabresep, n int, reader *bufio.Reader) {
 	var temp dataresep
 
 	clearScreen()
+	tampilanresep(resep, n)
 
 	fmt.Println("╔══════════════════════════════════════════╗")
-	fmt.Println("║        𐙚⋆🍓 Ubah Data Resep 🍰⋆𐙚         ║")
+	fmt.Println("║       🍓 Ubah Data Resep 🍰              ║")
 	fmt.Println("╠══════════════════════════════════════════╣")
-	fmt.Printf("║  Masukan nomor resep yang mau diubah     ║\n")
-	fmt.Printf("║  (1 - %d) :                              ║\n", n)
+	fmt.Println("║  Masukan nomor resep yang mau diubah     ║")
 	fmt.Println("╚══════════════════════════════════════════╝")
 	fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
 
-	fmt.Scan(&idx)
-
+	fmt.Scanln(&idx)
 	idx = idx - 1
 
 	if idx < 0 || idx >= n {
@@ -491,6 +615,8 @@ func ubahData(resep *tabresep, n int, reader *bufio.Reader) {
 		wait()
 		return
 	}
+	temp = resep[idx]
+
 	clearScreen()
 	fmt.Println("╔══════════════════════════════════════════╗")
 	fmt.Println("║        𐙚⋆🍓 Konfirmasi Ubah 🍰⋆𐙚         ║")
@@ -508,32 +634,39 @@ func ubahData(resep *tabresep, n int, reader *bufio.Reader) {
 		fmt.Println("║      𐙚⋆🍓 Update Dibatalkan 🍰⋆𐙚         ║")
 		fmt.Println("╠══════════════════════════════════════════╣")
 		fmt.Println("║    Tidak ada perubahan yang disimpan     ║")
-		fmt.Println("║                 𐔌՞ ܸ.ˬ.ܸ՞𐦯                 ║")
+		fmt.Println("║                 𐔌՞ ܸ.ˬ.ܸ՞𐦯                  ║")
 		fmt.Println("╚══════════════════════════════════════════╝")
 		wait()
+		return
 	} else {
 		clearScreen()
 		fmt.Println("═════════════════════════════════════════")
 		fmt.Println("     ✦ Masukkan data baru yaaa!! ♡ ♡ ♡   ")
 		fmt.Println("═════════════════════════════════════════")
-		var temp dataresep
-		fmt.Print("  📖 Judul Resep       : ")
-		temp.judulresep = inputString(reader)
 
-		fmt.Print("  🥬 Bahan Makanan     : ")
-		temp.bahanMakanan = inputString(reader)
-
-		fmt.Print("  🏷️  Kategori Masakan  : ")
-		temp.kategoriMasakan = inputString(reader)
-
-		fmt.Print("  🧄 Komposisi Bahan   : ")
-		temp.komposisiBahan = inputString(reader)
-
-		fmt.Print("  📝 Langkah Pembuatan : ")
-		temp.langkahPembuatan = inputString(reader)
-
-		fmt.Print("  ⏰ Estimasi Waktu    : ")
-		fmt.Scan(&temp.estimasiWaktu)
+		temp = resep[idx]
+		pilihubah = tampilanubahdata()
+		clearScreen()
+		switch pilihubah {
+		case 1:
+			fmt.Print("  📖 Judul Resep       : ")
+			temp.judulresep = inputString(reader)
+		case 2:
+			fmt.Print("  🥬 Bahan Makanan     : ")
+			temp.bahanMakanan = inputString(reader)
+		case 3:
+			fmt.Print("  🏷️  Kategori Masakan  : ")
+			temp.kategoriMasakan = inputString(reader)
+		case 4:
+			fmt.Print("  🧄 Komposisi Bahan   : ")
+			temp.komposisiBahan = inputString(reader)
+		case 5:
+			fmt.Print("  📝 Langkah Pembuatan : ")
+			temp.langkahPembuatan = inputString(reader)
+		case 6:
+			fmt.Print("  ⏰ Estimasi Waktu    : ")
+			fmt.Scanln(&temp.estimasiWaktu)
+		}
 
 		fmt.Println(" ")
 		clearScreen()
@@ -586,7 +719,7 @@ func hapusData(resep *tabresep, n *int) {
 	fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
 	fmt.Print(" ")
 
-	fmt.Scan(&idx)
+	fmt.Scanln(&idx)
 
 	idx = idx - 1
 	if idx < 0 || idx >= *n {
@@ -614,7 +747,7 @@ func hapusData(resep *tabresep, n *int) {
 	fmt.Println("╚══════════════════════════════════════════╝")
 	fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
 
-	fmt.Scan(&konfirmasi)
+	fmt.Scanln(&konfirmasi)
 
 	if konfirmasi != 1 {
 
@@ -624,7 +757,7 @@ func hapusData(resep *tabresep, n *int) {
 		fmt.Println("╠══════════════════════════════════════════╣")
 		fmt.Println("║  Data resep tidak jadi dihapus yaa ♡     ║")
 		fmt.Println("║                𐔌՞ ܸ.ˬ.ܸ՞𐦯                  ║")
-		fmt.Println("╚══════════════════════════════════════════╝")
+		fmt.Println("╚━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╝")
 		wait()
 
 		return // ← batalkan, tidak jadi hapus
@@ -728,9 +861,22 @@ func StatistikKategori(resep tabresep, n int) {
 	fmt.Println()
 }
 
-//═════════════════════════════════════════
+// ═════════════════════════════════════════
 // function case 5 "pengurutan"
-//═════════════════════════════════════════
+// ═════════════════════════════════════════
+func sortBahanMakanan(resep *tabresep, n int) {
+	var i, j int
+	var temp dataresep
+	for i = 1; i < n; i++ {
+		temp = resep[i]
+		j = i - 1
+		for j >= 0 && toLower(resep[j].bahanMakanan) > toLower(temp.bahanMakanan) {
+			resep[j+1] = resep[j]
+			j = j - 1
+		}
+		resep[j+1] = temp
+	}
+}
 
 func sortWaktu(resep *tabresep, n int) {
 	var i, j, min int
@@ -829,7 +975,7 @@ func favorite(resep *tabresep, n int) {
 	var pilihfav int
 	tampilanresep(resep, n)
 	fmt.Print("> resep nomer berapa yang ingin ditambahkan ke favorit?? : ")
-	fmt.Scan(&pilihfav)
+	fmt.Scanln(&pilihfav)
 
 	pilihfav--
 
@@ -856,10 +1002,10 @@ func favorite(resep *tabresep, n int) {
 func lihatfavori(resep tabresep, n int) {
 	var i int
 	var found bool
+	clearScreen()
 	for i = 0; i < n; i++ {
 		if resep[i].favorit == true {
 			found = true
-			clearScreen()
 			fmt.Println("             🍓  ≽^• ˕ • ྀི≼ 🍰 ")
 			fmt.Printf("         > !! RESEP FAVORITE MUU!! <")
 			fmt.Println()
@@ -880,6 +1026,7 @@ func lihatfavori(resep tabresep, n int) {
 		fmt.Println("Belum ada resep favorit ❤️")
 	}
 }
+
 func inputString(reader *bufio.Reader) string {
 	var text string
 	text = ""
@@ -889,6 +1036,7 @@ func inputString(reader *bufio.Reader) string {
 	}
 	return text
 }
+
 func clearScreen() {
 	var cmd *exec.Cmd              //var untuk menyimpan perintah terminal
 	if runtime.GOOS == "windows" { //ini kalau user menggunakan windows
@@ -921,16 +1069,6 @@ func toLower(s string) string {
 	}
 	return res
 }
-func containsString(s, substr string) bool {
-	var i int
-	for i = 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return true
-		}
-	}
-	return false
-}
-
 func datadummy(resep *tabresep, n *int) {
 	*n = 10
 
