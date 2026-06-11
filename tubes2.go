@@ -63,7 +63,12 @@ func main() {
 		//═════════════════════════════════════════
 		case 2:
 			if n == 0 {
-				fmt.Println("Belum ada data resep")
+				fmt.Println("╔══════════════════════════════════════════╗")
+				fmt.Println("║      𐙚⋆🍓 Belum Ada Data Resep 🍰⋆𐙚      ║")
+				fmt.Println("╠══════════════════════════════════════════╣")
+				fmt.Println("║    Silakan tambahkan resep terlebih      ║")
+				fmt.Println("║    dahulu yaa ₍ᐢ. .ᐢ₎♡                   ║")
+				fmt.Println("╚══════════════════════════════════════════╝")
 			} else {
 				tampilanresep(&resep, n)
 			}
@@ -342,7 +347,7 @@ func tampilansearching() {
 }
 func tampilanCara() {
 	fmt.Println("╔══════════════════════════════════════════╗")
-	fmt.Println("║ dengan cara apa data dicari??            ║")
+	fmt.Println("║ 𐙚⋆🍓 dengan cara apa data dicari?? 🍰⋆𐙚  ║")
 	fmt.Println("╠══════════════════════════════════════════╣")
 	fmt.Println("║  Ingin berdasarkan apa data dicari?      ║")
 	fmt.Println("║  [1] sequential.                         ║")
@@ -710,11 +715,11 @@ func hapusData(resep *tabresep, n *int) {
 	var konfirmasi int
 	var i int
 	clearScreen()
+	tampilanresep(resep, *n)
 	fmt.Println("╔══════════════════════════════════════════╗")
 	fmt.Println("║       𐙚⋆🍓 Hapus Data Resep 🍰⋆𐙚         ║")
 	fmt.Println("╠══════════════════════════════════════════╣")
 	fmt.Printf("║  Masukan nomor resep yang mau dihapus    ║\n")
-	fmt.Printf("║  (1 - %d) :                              ║\n", *n)
 	fmt.Println("╚══════════════════════════════════════════╝")
 	fmt.Print("> masukan angkanya ya!! ₍ᵔ.˛.ᵔ₎ : ")
 	fmt.Print(" ")
@@ -895,19 +900,19 @@ func sortWaktu(resep *tabresep, n int) {
 	}
 }
 func sortWaktuDesc(resep *tabresep, n int) {
-	var i, j, min int
+	var i, j, max int
 	var temp dataresep
 	for i = 0; i < n-1; i++ {
-		min = i
+		max = i
 		for j = i + 1; j < n; j++ {
-			if resep[j].estimasiWaktu > resep[min].estimasiWaktu {
-				min = j
+			if resep[j].estimasiWaktu > resep[max].estimasiWaktu {
+				max = j
 
 			}
 		}
 		temp = resep[i]
-		resep[i] = resep[min]
-		resep[min] = temp
+		resep[i] = resep[max]
+		resep[max] = temp
 	}
 }
 
@@ -1023,7 +1028,12 @@ func lihatfavori(resep tabresep, n int) {
 
 	}
 	if !found {
-		fmt.Println("Belum ada resep favorit ❤️")
+		fmt.Println("╔══════════════════════════════════════════╗")
+		fmt.Println("║      𐙚⋆🍓 Belum Ada Favorit 🍰⋆𐙚         ║")
+		fmt.Println("╠══════════════════════════════════════════╣")
+		fmt.Println("║   Kamu belum menambahkan resep favorit   ║")
+		fmt.Println("║               ❤️ ૮₍˶ᵔ ᵕ ᵔ˶₎ა             ║")
+		fmt.Println("╚══════════════════════════════════════════╝")
 	}
 }
 
