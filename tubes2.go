@@ -20,6 +20,7 @@ type dataresep struct {
 	estimasiWaktu    int
 	jumlahDicari     int
 	favorit          bool
+	noAsli		 int
 }
 
 type tabresep [NMAX]dataresep
@@ -309,6 +310,9 @@ func input(resep *tabresep, n *int, reader *bufio.Reader) {
 		fmt.Print("  ⏰ Estimasi Waktu    : ")
 		fmt.Scanln(&resep[i].estimasiWaktu)
 		reader.ReadString('\n')
+
+		resep[i].noAsli = i + 1
+
 		wait()
 	}
 }
@@ -421,6 +425,7 @@ func pencarianBinary(n int, resep *tabresep, bahanYgDicari string) {
 	var left, right, mid int
 	var found int
 	var target string
+	var i int
 	left = 0
 	right = n - 1
 	found = -1
@@ -436,20 +441,34 @@ func pencarianBinary(n int, resep *tabresep, bahanYgDicari string) {
 		}
 	}
 	if found != -1 {
-		(*resep)[found].jumlahDicari++
-		//══════════════════════════════════════════════
-		//══════════════════════════════════════════════
+
+	// cari data pertama yang sama
+	i = found
+	for i > 0 && toLower((*resep)[i-1].bahanMakanan) == target {
+		i--
+	}
+
+	// tampilkan semua data yang sama
+	for i < n && toLower((*resep)[i].bahanMakanan) == target {
+
+		(*resep)[i].jumlahDicari++
+
 		fmt.Println("══════════════════════════════════════════")
-		fmt.Printf("         𐙚⋆🍓 Resep ke-%-2d 🍰⋆𐙚           \n", found+1)
+		fmt.Printf("         𐙚⋆🍓 Resep ke-%-2d 🍰⋆𐙚           \n",
+			(*resep)[i].noAsli)
 		fmt.Println("══════════════════════════════════════════")
-		fmt.Printf("  📖 Judul Resep       : %s\n", resep[found].judulresep)
-		fmt.Printf("  🥬 Bahan Makanan     : %s\n", resep[found].bahanMakanan)
-		fmt.Printf("  🏷️  Kategori Masakan  : %s\n", resep[found].kategoriMasakan)
-		fmt.Printf("  🧄 Komposisi Bahan   : %s\n", resep[found].komposisiBahan)
-		fmt.Printf("  📝 Langkah Pembuatan : %s\n", resep[found].langkahPembuatan)
-		fmt.Printf("  ⏰ Estimasi Waktu    : %d menit\n", resep[found].estimasiWaktu)
+		fmt.Printf("  📖 Judul Resep       : %s\n", (*resep)[i].judulresep)
+		fmt.Printf("  🥬 Bahan Makanan     : %s\n", (*resep)[i].bahanMakanan)
+		fmt.Printf("  🏷️  Kategori Masakan  : %s\n", (*resep)[i].kategoriMasakan)
+		fmt.Printf("  🧄 Komposisi Bahan   : %s\n", (*resep)[i].komposisiBahan)
+		fmt.Printf("  📝 Langkah Pembuatan : %s\n", (*resep)[i].langkahPembuatan)
+		fmt.Printf("  ⏰ Estimasi Waktu    : %d menit\n", (*resep)[i].estimasiWaktu)
 		fmt.Println()
-	} else {
+
+		i++
+	}
+
+} else {
 
 		clearScreen()
 		fmt.Println("╔══════════════════════════════════════════╗")
@@ -464,6 +483,7 @@ func binaryBahanMakanan(n int, resep *tabresep, bahanYgDicari string) {
 	var found int
 	var left, right, mid int
 	var target string
+	var i int
 	left = 0
 	right = n - 1
 	found = -1
@@ -479,20 +499,34 @@ func binaryBahanMakanan(n int, resep *tabresep, bahanYgDicari string) {
 		}
 	}
 	if found != -1 {
-		(*resep)[found].jumlahDicari++
-		//══════════════════════════════════════════════
-		//══════════════════════════════════════════════
+
+	// cari data pertama yang sama
+	i = found
+	for i > 0 && toLower((*resep)[i-1].bahanMakanan) == target {
+		i--
+	}
+
+	// tampilkan semua data yang sama
+	for i < n && toLower((*resep)[i].bahanMakanan) == target {
+
+		(*resep)[i].jumlahDicari++
+
 		fmt.Println("══════════════════════════════════════════")
-		fmt.Printf("         𐙚⋆🍓 Resep ke-%-2d 🍰⋆𐙚           \n", found+1)
+		fmt.Printf("         𐙚⋆🍓 Resep ke-%-2d 🍰⋆𐙚           \n",
+			(*resep)[i].noAsli)
 		fmt.Println("══════════════════════════════════════════")
-		fmt.Printf("  📖 Judul Resep       : %s\n", resep[found].judulresep)
-		fmt.Printf("  🥬 Bahan Makanan     : %s\n", resep[found].bahanMakanan)
-		fmt.Printf("  🏷️  Kategori Masakan  : %s\n", resep[found].kategoriMasakan)
-		fmt.Printf("  🧄 Komposisi Bahan   : %s\n", resep[found].komposisiBahan)
-		fmt.Printf("  📝 Langkah Pembuatan : %s\n", resep[found].langkahPembuatan)
-		fmt.Printf("  ⏰ Estimasi Waktu    : %d menit\n", resep[found].estimasiWaktu)
+		fmt.Printf("  📖 Judul Resep       : %s\n", (*resep)[i].judulresep)
+		fmt.Printf("  🥬 Bahan Makanan     : %s\n", (*resep)[i].bahanMakanan)
+		fmt.Printf("  🏷️  Kategori Masakan  : %s\n", (*resep)[i].kategoriMasakan)
+		fmt.Printf("  🧄 Komposisi Bahan   : %s\n", (*resep)[i].komposisiBahan)
+		fmt.Printf("  📝 Langkah Pembuatan : %s\n", (*resep)[i].langkahPembuatan)
+		fmt.Printf("  ⏰ Estimasi Waktu    : %d menit\n", (*resep)[i].estimasiWaktu)
 		fmt.Println()
-	} else {
+
+		i++
+	}
+
+} else {
 
 		clearScreen()
 		fmt.Println("╔══════════════════════════════════════════╗")
@@ -557,6 +591,7 @@ func tambahData(resep *tabresep, n *int, reader *bufio.Reader) {
 
 	fmt.Print("  ⏰ Estimasi Waktu    : ")
 	fmt.Scan(&resep[i].estimasiWaktu)
+	
 	fmt.Println(" ")
 	clearScreen()
 
@@ -912,7 +947,7 @@ func sortWaktuDesc(resep *tabresep, n int) {
 		}
 		temp = resep[i]
 		resep[i] = resep[max]
-		resep[max] = temp
+		resep[i] = temp
 	}
 }
 
@@ -1083,6 +1118,7 @@ func datadummy(resep *tabresep, n *int) {
 	*n = 10
 
 	resep[0] = dataresep{
+		noAsli: 1,
 		judulresep:       "Nasi Goreng Spesial",
 		bahanMakanan:     "Nasi",
 		kategoriMasakan:  "Makanan Utama",
@@ -1092,6 +1128,7 @@ func datadummy(resep *tabresep, n *int) {
 	}
 
 	resep[1] = dataresep{
+		noAsli: 2,
 		judulresep:       "Ayam Goreng Krispi",
 		bahanMakanan:     "Ayam",
 		kategoriMasakan:  "Makanan Utama",
@@ -1101,6 +1138,7 @@ func datadummy(resep *tabresep, n *int) {
 	}
 
 	resep[2] = dataresep{
+		noAsli: 3,
 		judulresep:       "Sup Jagung",
 		bahanMakanan:     "Jagung",
 		kategoriMasakan:  "Sup",
@@ -1110,6 +1148,7 @@ func datadummy(resep *tabresep, n *int) {
 	}
 
 	resep[3] = dataresep{
+		noAsli: 4,
 		judulresep:       "Mie Goreng Jawa",
 		bahanMakanan:     "Mie",
 		kategoriMasakan:  "Makanan Utama",
@@ -1119,6 +1158,7 @@ func datadummy(resep *tabresep, n *int) {
 	}
 
 	resep[4] = dataresep{
+		noAsli: 5,
 		judulresep:       "Puding Coklat",
 		bahanMakanan:     "Coklat",
 		kategoriMasakan:  "Dessert",
@@ -1128,6 +1168,7 @@ func datadummy(resep *tabresep, n *int) {
 	}
 
 	resep[5] = dataresep{
+		noAsli: 6,
 		judulresep:       "Es Buah Segar",
 		bahanMakanan:     "Buah",
 		kategoriMasakan:  "Minuman",
@@ -1137,6 +1178,7 @@ func datadummy(resep *tabresep, n *int) {
 	}
 
 	resep[6] = dataresep{
+		noAsli: 7,
 		judulresep:       "Sate Ayam Madura",
 		bahanMakanan:     "Ayam",
 		kategoriMasakan:  "Makanan Utama",
@@ -1146,6 +1188,7 @@ func datadummy(resep *tabresep, n *int) {
 	}
 
 	resep[7] = dataresep{
+		noAsli: 8,
 		judulresep:       "Tumis Kangkung",
 		bahanMakanan:     "Kangkung",
 		kategoriMasakan:  "Sayuran",
@@ -1155,6 +1198,7 @@ func datadummy(resep *tabresep, n *int) {
 	}
 
 	resep[8] = dataresep{
+		noAsli: 9,
 		judulresep:       "Bakso Kuah",
 		bahanMakanan:     "Daging Sapi",
 		kategoriMasakan:  "Sup",
@@ -1164,6 +1208,7 @@ func datadummy(resep *tabresep, n *int) {
 	}
 
 	resep[9] = dataresep{
+		noAsli: 10,
 		judulresep:       "Pancake Pisang",
 		bahanMakanan:     "Pisang",
 		kategoriMasakan:  "Dessert",
