@@ -534,7 +534,7 @@ func binaryBahanMakanan(n int, resep *tabresep, bahanYgDicari string) {
 	}
 }
 
-// ═════════════════════════════════════════
+// ════════════════════════════════════════
 // function case 4 "kelola data"
 // ═════════════════════════════════════════
 func menukelola() int {
