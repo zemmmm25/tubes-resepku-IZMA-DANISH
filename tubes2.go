@@ -442,13 +442,11 @@ func pencarianBinary(n int, resep *tabresep, bahanYgDicari string) {
 	}
 	if found != -1 {
 
-	// cari data pertama yang sama
 	i = found
 	for i > 0 && toLower((*resep)[i-1].bahanMakanan) == target {
 		i--
 	}
 
-	// tampilkan semua data yang sama
 	for i < n && toLower((*resep)[i].bahanMakanan) == target {
 
 		(*resep)[i].jumlahDicari++
@@ -500,13 +498,11 @@ func binaryBahanMakanan(n int, resep *tabresep, bahanYgDicari string) {
 	}
 	if found != -1 {
 
-	// cari data pertama yang sama
 	i = found
 	for i > 0 && toLower((*resep)[i-1].bahanMakanan) == target {
 		i--
 	}
 
-	// tampilkan semua data yang sama
 	for i < n && toLower((*resep)[i].bahanMakanan) == target {
 
 		(*resep)[i].jumlahDicari++
@@ -723,7 +719,7 @@ func ubahData(resep *tabresep, n int, reader *bufio.Reader) {
 
 		clearScreen()
 		if konfirmasi == 1 {
-			resep[idx] = temp // Data asli baru ditimpa di sini kalau setuju
+			resep[idx] = temp 
 			fmt.Println("╔══════════════════════════════════════════╗")
 			fmt.Println("║      𐙚⋆🍓 Update Berhasil! 🍰⋆𐙚          ║")
 			fmt.Println("╠══════════════════════════════════════════╣")
@@ -801,7 +797,7 @@ func hapusData(resep *tabresep, n *int) {
 		fmt.Println("╚━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╝")
 		wait()
 
-		return // ← batalkan, tidak jadi hapus
+		return 
 	}
 	for i = idx; i < *n-1; i++ {
 		resep[i] = resep[i+1]
@@ -850,7 +846,6 @@ func Statistik(resep tabresep, n int) {
 	fmt.Printf("  📊 Rata-rata Waktu      : %.2f menit\n", rataRata)
 	fmt.Printf("  ⚡ Waktu Tercepat       : %d menit\n", minWaktu)
 	fmt.Printf("  🔥 Waktu Terlama        : %d menit\n", maxWaktu)
-	// ← tambah ini sebelum if!
 	maxDicari = 0
 	idxMax = 0
 	for i = 0; i < n; i++ {
