@@ -590,9 +590,10 @@ func tambahData(resep *tabresep, n *int, reader *bufio.Reader) {
 	resep[i].langkahPembuatan = inputString(reader)
 
 	fmt.Print("  ⏰ Estimasi Waktu    : ")
-	fmt.Scan(&resep[i].estimasiWaktu)
+	fmt.Scanln(&resep[i].estimasiWaktu)
 	
 	fmt.Println(" ")
+
 	clearScreen()
 
 	*n = *n + 1
@@ -861,7 +862,7 @@ func Statistik(resep tabresep, n int) {
 
 	if maxDicari > 0 {
 		fmt.Printf("  🔍 Paling sering dicari : %s (%dx)\n",
-			resep[idxMax].judulresep, maxDicari)
+		resep[idxMax].judulresep, maxDicari)
 	} else {
 		fmt.Println("  🔍 Paling sering dicari : Belum ada yang dicari")
 	}
@@ -889,14 +890,14 @@ func StatistikKategori(resep tabresep, n int) {
 			totalKategori++
 		}
 
-	}
+	} 
 	fmt.Println("══════════════════════════════════════════")
 	fmt.Println("     𐙚⋆🍓 Statistik Per Kategori 🍰⋆𐙚     ")
 	fmt.Println("══════════════════════════════════════════")
 
 	for i = 0; i < totalKategori; i++ {
 		fmt.Printf("  🏷️  %-20s : %d resep\n",
-			namaKategori[i], jumlahKategori[i])
+		namaKategori[i], jumlahKategori[i])
 	}
 	fmt.Println()
 }
